@@ -1,68 +1,76 @@
 [package]
 name = "esp-hal-smartled"
-version = "0.22.0"
-edition = "2021"
+version = "0.23.0"
+edition = "2024"
+rust-version = "1.91"
 
 [dependencies]
-esp-hal = { version = "1.0.0-beta.0", features = ["unstable"], optional = true }
-esp-hal-embassy = { version = "0.7", optional = true }
-smart-leds-trait = "0.3"
-fugit = "0.3"
-document-features = "0.2.10"
-defmt = { version = "0.3.8", optional = true }
-
-[dev-dependencies]
-esp-hal = { version = "1.0.0-beta.0" }
-esp-backtrace = { version = "0.15", features = [
-    "exception-handler",
-    "panic-handler",
-    "println",
+esp-hal = { version = "=1.0.0", default-features = false, features = [
+    "requires-unstable",
 ] }
-esp-println = { version = "0.13", features = ["auto"] }
-smart-leds = "0.4"
-cfg-if = "1"
+smart-leds-trait = "0.3"
+defmt = { version = "1", optional = true }
 
 [features]
-defmt = ["dep:defmt", "esp-hal/defmt"]
+defmt = ["dep:defmt", "esp-hal/defmt", "esp-bootloader-esp-idf/defmt"]
+
+# unfortunately necessary ...
+# not to be used by upstream.
+
 esp32 = [
     "esp-hal/esp32",
-    "esp-hal-embassy?/esp32",
-    "esp-backtrace/esp32",
     "esp-println/esp32",
+    "esp-backtrace/esp32",
+    "esp-bootloader-esp-idf/esp32",
 ]
 esp32c2 = [
     "esp-hal/esp32c2",
-    "esp-hal-embassy?/esp32c2",
-    "esp-backtrace/esp32c2",
     "esp-println/esp32c2",
+    "esp-backtrace/esp32c2",
+    "esp-bootloader-esp-idf/esp32c2",
 ]
 esp32c3 = [
     "esp-hal/esp32c3",
-    "esp-hal-embassy?/esp32c3",
-    "esp-backtrace/esp32c3",
     "esp-println/esp32c3",
+    "esp-backtrace/esp32c3",
+    "esp-bootloader-esp-idf/esp32c3",
 ]
 esp32c6 = [
     "esp-hal/esp32c6",
-    "esp-hal-embassy?/esp32c6",
-    "esp-backtrace/esp32c6",
     "esp-println/esp32c6",
+    "esp-backtrace/esp32c6",
+    "esp-bootloader-esp-idf/esp32c6",
 ]
 esp32h2 = [
     "esp-hal/esp32h2",
-    "esp-hal-embassy?/esp32h2",
-    "esp-backtrace/esp32h2",
     "esp-println/esp32h2",
+    "esp-backtrace/esp32h2",
+    "esp-bootloader-esp-idf/esp32h2",
 ]
 esp32s2 = [
     "esp-hal/esp32s2",
-    "esp-hal-embassy?/esp32s2",
-    "esp-backtrace/esp32s2",
     "esp-println/esp32s2",
+    "esp-backtrace/esp32s2",
+    "esp-bootloader-esp-idf/esp32s2",
 ]
 esp32s3 = [
     "esp-hal/esp32s3",
-    "esp-hal-embassy?/esp32s3",
-    "esp-backtrace/esp32s3",
     "esp-println/esp32s3",
+    "esp-backtrace/esp32s3",
+    "esp-bootloader-esp-idf/esp32s3",
 ]
+
+[package.metadata.docs.rs]
+# use a RISC-V chip and target for docs.rs as it doesn’t require a special compiler
+features = ["esp32c3", "esp-hal/unstable"]
+default-target = "riscv32imac-unknown-none-elf"
+targets = ["riscv32imac-unknown-none-elf"]
+
+[dev-dependencies]
+# example runs on ESP32-C6
+esp-hal = { version = "=1.0.0", features = ["unstable"] }
+esp-backtrace = { version = "0.18", features = ["panic-handler", "println"] }
+esp-println = { version = "0.16", features = ["auto"] }
+esp-bootloader-esp-idf = { version = "0.4.0" }
+smart-leds = "0.4"
+cfg-if = "1"
