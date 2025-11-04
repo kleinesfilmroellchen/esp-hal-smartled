@@ -618,7 +618,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "esp-hal-smartled"
+name = "esp-hal-smartled2"
 version = "0.23.0"
 dependencies = [
  "cfg-if",
