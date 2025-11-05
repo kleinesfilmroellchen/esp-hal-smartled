@@ -250,6 +250,36 @@ dependencies = [
 ]
 
 [[package]]
+name = "embassy-executor"
+version = "0.9.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "06070468370195e0e86f241c8e5004356d696590a678d47d6676795b2e439c6b"
+dependencies = [
+ "critical-section",
+ "document-features",
+ "embassy-executor-macros",
+ "embassy-executor-timer-queue",
+]
+
+[[package]]
+name = "embassy-executor-macros"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dfdddc3a04226828316bf31393b6903ee162238576b1584ee2669af215d55472"
+dependencies = [
+ "darling 0.20.11",
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "embassy-executor-timer-queue"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2fc328bf943af66b80b98755db9106bf7e7471b0cf47dc8559cd9a6be504cc9c"
+
+[[package]]
 name = "embassy-futures"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -293,6 +323,41 @@ dependencies = [
  "embedded-io-async 0.6.1",
  "futures-core",
  "futures-sink",
+ "heapless 0.8.0",
+]
+
+[[package]]
+name = "embassy-time"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f4fa65b9284d974dad7a23bb72835c4ec85c0b540d86af7fc4098c88cff51d65"
+dependencies = [
+ "cfg-if",
+ "critical-section",
+ "document-features",
+ "embassy-time-driver",
+ "embedded-hal 0.2.7",
+ "embedded-hal 1.0.0",
+ "embedded-hal-async",
+ "futures-core",
+]
+
+[[package]]
+name = "embassy-time-driver"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a0a244c7dc22c8d0289379c8d8830cae06bb93d8f990194d0de5efb3b5ae7ba6"
+dependencies = [
+ "document-features",
+]
+
+[[package]]
+name = "embassy-time-queue-utils"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "80e2ee86063bd028a420a5fb5898c18c87a8898026da1d4c852af2c443d0a454"
+dependencies = [
+ "embassy-executor-timer-queue",
  "heapless 0.8.0",
 ]
 
@@ -558,10 +623,13 @@ version = "0.23.0"
 dependencies = [
  "cfg-if",
  "defmt 1.0.1",
+ "embassy-executor",
+ "embassy-time",
  "esp-backtrace",
  "esp-bootloader-esp-idf",
  "esp-hal",
  "esp-println",
+ "esp-rtos",
  "smart-leds",
  "smart-leds-trait",
 ]
@@ -578,6 +646,7 @@ version = "0.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5a30e6c9fbcc01c348d46706fef8131c7775ab84c254a3cd65d0cd3f6414d592"
 dependencies = [
+ "defmt 1.0.1",
  "document-features",
  "esp-metadata-generated",
  "esp-sync",
@@ -606,6 +675,27 @@ dependencies = [
  "cfg-if",
  "document-features",
  "esp-metadata-generated",
+]
+
+[[package]]
+name = "esp-rtos"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "162ec711c8d06e79c67b75d01595539e86b0aac209643af98ca87a12250428b3"
+dependencies = [
+ "cfg-if",
+ "defmt 1.0.1",
+ "document-features",
+ "embassy-executor",
+ "embassy-sync 0.7.2",
+ "embassy-time-driver",
+ "embassy-time-queue-utils",
+ "esp-config",
+ "esp-hal",
+ "esp-hal-procmacros",
+ "esp-metadata-generated",
+ "esp-sync",
+ "portable-atomic",
 ]
 
 [[package]]
