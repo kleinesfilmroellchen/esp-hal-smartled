@@ -4,7 +4,6 @@
 		"--target=riscv32imac-unknown-none-elf"
 	],
 	"rust-analyzer.cargo.features": [
-		"embedded-graphics",
 		"defmt",
 		"esp-hal/unstable",
 		"esp32c6",
