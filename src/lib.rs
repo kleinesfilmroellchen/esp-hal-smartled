@@ -134,6 +134,22 @@ impl From<RmtError> for AdapterError {
     }
 }
 
+impl
+    From<(
+        esp_hal::rmt::Error,
+        esp_hal::rmt::Channel<'_, Blocking, esp_hal::rmt::Tx>,
+    )> for AdapterError
+{
+    fn from(
+        value: (
+            esp_hal::rmt::Error,
+            esp_hal::rmt::Channel<'_, Blocking, esp_hal::rmt::Tx>,
+        ),
+    ) -> Self {
+        Self::TransmissionError(value.0)
+    }
+}
+
 /// Utility trait that retrieves metadata about all [`smart_leds_trait`] color types.
 pub trait Color {
     /// The maximum channel number this color supports.
@@ -323,25 +339,25 @@ where
 }
 
 /// A [`RmtSmartLeds`] for 8-bit RGB colors, which is what most smart LEDs use.
-/// 
+///
 /// You still need to pick the `Order` of the three colors as well as the `Timing` and the `BUFFER_SIZE`.
 pub type Rgb8RmtSmartLeds<'d, const BUFFER_SIZE: usize, Mode, Order, Timing> =
     RmtSmartLeds<'d, BUFFER_SIZE, Mode, RGB8, Order, Timing>;
 
 /// A [`RmtSmartLeds`] for the common WS2812 integrated smart LEDs.
-/// 
+///
 /// You only need to pick the `BUFFER_SIZE` to use this.
 pub type Ws2812SmartLeds<'d, const BUFFER_SIZE: usize, Mode> =
     Rgb8RmtSmartLeds<'d, BUFFER_SIZE, Mode, color_order::Grb, Ws2812Timing>;
 
 /// A [`RmtSmartLeds`] for integrated SK8612 (etc.) smart LEDs with RGBW.
-/// 
+///
 /// You only need to pick the `BUFFER_SIZE` to use this.
 pub type Sk68xxRgbwSmartLeds<'d, const BUFFER_SIZE: usize, Mode> =
     RmtSmartLeds<'d, BUFFER_SIZE, Mode, RGBW<u8>, color_order::Rgbw, Sk68xxTiming>;
 
 /// A [`RmtSmartLeds`] for smart LEDs with a single (white) channel.
-/// 
+///
 /// You only need to pick the `BUFFER_SIZE` and `Timing` to use this.
 pub type WhiteSmartLeds<'d, const BUFFER_SIZE: usize, Mode, Timing> =
     RmtSmartLeds<'d, BUFFER_SIZE, Mode, White<u8>, color_order::SingleChannel, Timing>;
@@ -395,7 +411,7 @@ where
             .with_carrier_modulation(false)
             .with_idle_output(true);
 
-        let channel = channel.configure_tx(pin, config)?;
+        let channel = channel.configure_tx(&config).unwrap().with_pin(pin);
 
         // Assume the RMT peripheral is set up to use the APB clock
         let clocks = Clocks::get();
