@@ -729,7 +729,7 @@ dependencies = [
 
 [[package]]
 name = "esp-hal-smartled2"
-version = "0.28.1"
+version = "0.28.2"
 dependencies = [
  "defmt 1.0.1",
  "embassy-executor",
